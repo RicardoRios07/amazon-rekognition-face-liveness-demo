@@ -10,6 +10,6 @@ frontend:
   artifacts:
     files:
         - '**/*'
-    baseDirectory: /build
+    baseDirectory: build
   cache: null
 

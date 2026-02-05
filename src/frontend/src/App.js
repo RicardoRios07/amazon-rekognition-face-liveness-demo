@@ -8,6 +8,8 @@ import ReferenceImage from './Components/ReferenceImage';
 import {
   View,
   Flex,
+  Heading,
+  Text,
 } from '@aws-amplify/ui-react';
 
 import awsexports from './aws-exports';
@@ -31,28 +33,49 @@ function App() {
 
   return (
     <ThemeProvider>
-      <Flex
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        alignContent="flex-start"
-        wrap="nowrap"
-        gap="1rem"
-      >
-        <View
-          as="div"
-          maxHeight="600px"
-          height="600px"
-          width="740px"
-          maxWidth="740px"
-        >
-          {faceLivenessAnalysis && faceLivenessAnalysis.Confidence ? (
-            <ReferenceImage faceLivenessAnalysis={faceLivenessAnalysis} tryagain={tryagain}></ReferenceImage>
-          ) :
-            (<FaceLiveness faceLivenessAnalysis={getfaceLivenessAnalysis} />)}
+      <div className="app-container">
+        <div className="header-section">
+          <div className="logo-container">
+            <svg className="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+              <circle cx="12" cy="10" r="3"/>
+              <path d="M12 13v7"/>
+            </svg>
+          </div>
+          <Heading level={1} className="main-title">
+            🔐 Verificación de Identidad
+          </Heading>
+          <Text className="subtitle">
+            Sistema de Reconocimiento Facial con Amazon Rekognition
+          </Text>
+          <div className="divider"></div>
+        </div>
 
-        </View>
-      </Flex>
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          gap="2rem"
+          className="content-wrapper"
+        >
+          <View
+            as="div"
+            className="liveness-container"
+          >
+            {faceLivenessAnalysis && faceLivenessAnalysis.Confidence ? (
+              <ReferenceImage faceLivenessAnalysis={faceLivenessAnalysis} tryagain={tryagain}></ReferenceImage>
+            ) :
+              (<FaceLiveness faceLivenessAnalysis={getfaceLivenessAnalysis} />)}
+
+          </View>
+        </Flex>
+
+        <footer className="app-footer">
+          <Text className="footer-text">
+            Powered by AWS • Amazon Rekognition Face Liveness
+          </Text>
+        </footer>
+      </div>
     </ThemeProvider>
 
 

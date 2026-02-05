@@ -143,9 +143,9 @@ echo "###########################################################"
 echo 
 color_reset
 
-rm -rf $BASE_DIR/cdk.out
-mkdir -p $BASE_DIR/cdk.out
-pip3 install -r $BASE_DIR/infra/requirements.txt >$BASE_DIR/cdk.out/pip3.log 2>&1 
+rm -rf "$BASE_DIR/cdk.out"
+mkdir -p "$BASE_DIR/cdk.out"
+pip3 install -r "$BASE_DIR/infra/requirements.txt" >"$BASE_DIR/cdk.out/pip3.log" 2>&1 
 
 if [ "$?" -ne "0" ]
 then
@@ -160,8 +160,8 @@ then
   exit 1
 fi
 
-chmod a+x $BASE_DIR/app.py
-cdk synth -a $BASE_DIR/app.py --require-approval never > $BASE_DIR/cdk.out/synth.log
+chmod a+x "$BASE_DIR/app.py"
+cdk synth -a "$BASE_DIR/app.py" --require-approval never > "$BASE_DIR/cdk.out/synth.log"
 if [ "$?" -ne "0" ]
 then
   color_red
@@ -172,9 +172,9 @@ then
   exit 1
 fi
 
-export STACK_TEMPLATE_FILE=$BASE_DIR/cdk.out/$RFL_STACK_NAME.template.json
+export STACK_TEMPLATE_FILE="$BASE_DIR/cdk.out/$RFL_STACK_NAME.template.json"
 
-mv $STACK_TEMPLATE_FILE $STACK_TEMPLATE_FILE.original
+mv "$STACK_TEMPLATE_FILE" "$STACK_TEMPLATE_FILE.original"
 
 color_green
 echo Passed.
@@ -185,12 +185,12 @@ echo "#  Zip the assets"
 echo "###########################################################"
 echo 
 color_reset
-for f in `ls $BASE_DIR/cdk.out/ | grep 'asset\.' | grep -v .zip`
+for f in `ls "$BASE_DIR/cdk.out/" | grep 'asset\.' | grep -v .zip`
 do
-  pushd $BASE_DIR/cdk.out/$f
+  pushd "$BASE_DIR/cdk.out/$f"
   if [ -e "$BASE_DIR/cdk.out/$f/requirements.txt" ]
   then
-    pip3 install --no-build-isolation -r "$BASE_DIR/cdk.out/$f/requirements.txt" -t ./python > $BASE_DIR/cdk.out/$f.pip3.log
+    pip3 install --no-build-isolation -r "$BASE_DIR/cdk.out/$f/requirements.txt" -t ./python > "$BASE_DIR/cdk.out/$f.pip3.log"
     # pip3 install aws-cdk.aws-cognito-identitypool -t ./python > $BASE_DIR/cdk.out/$f.pip3.log
 
     if [ "$?" -ne "0" ]
@@ -200,7 +200,7 @@ do
       echo "!! Unable to pip3 install     !!"
       echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       echo "pip3 install --no-build-isolation -r "$BASE_DIR/cdk.out/$f/requirements.txt" -t ./python"
-      echo cat $BASE_DIR/cdk.out/$f.pip3.log
+      echo cat "$BASE_DIR/cdk.out/$f.pip3.log"
 
       color_reset
       exit 1
@@ -277,4 +277,4 @@ echo "===================================="
 color_reset
 
 
-CDK_REGION=S3_REGION cdk deploy -a ./app.py --require-approval never
+CDK_REGION=S3_REGION cdk deploy -a "$BASE_DIR/app.py" --require-approval never
